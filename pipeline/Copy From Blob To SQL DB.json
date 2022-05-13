@@ -1,0 +1,362 @@
+{
+	"name": "Copy From Blob To SQL DB",
+	"properties": {
+		"activities": [
+			{
+				"name": "Blog Txt To SQL Table",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"preCopyScript": "TRUNCATE TABLE [dbo].[STG_MOA_DATA]",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "dunsNum",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "dunsNum",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "dunsName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "dunsName",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "county",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "county",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "streetAddress",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "streetAddress",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "STATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "STATE",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "zip",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "zip",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "phone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "phone",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "executiveContact1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "executiveContact1",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "executiveContact2",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "executiveContact2",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "isWomanOwned",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "isWomanOwned",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MinorityOwnedDesc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MinorityOwnedDesc",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryLeadershipGender",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimaryLeadershipGender",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryLeadership_Nationality",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimaryLeadershipNationality",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "InputTxtBlob",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "OutputSQLTable",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Pipeline Log",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Blog Txt To SQL Table",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[usp_ADFStagingPipelineLog]",
+					"storedProcedureParameters": {
+						"ADFName": {
+							"value": {
+								"value": "@pipeline().DataFactory",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"CopyTimeSeconds": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.copyDuration}",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"Dest": {
+							"value": null,
+							"type": "String"
+						},
+						"DestType": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.executionDetails[0].sink.type}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"ExecutionStatus": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.executionDetails[0].status}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"LogCreatedUTCDate": {
+							"value": {
+								"value": "@{utcnow()}",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						},
+						"PipelineName": {
+							"value": {
+								"value": "@pipeline().Pipeline",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RowsCopied": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.rowsCopied}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RowsRead": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.rowsRead}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"RunID": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"SourceType": {
+							"value": {
+								"value": "@{activity('Blog Txt To SQL Table').output.executionDetails[0].source.type}",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"Src": {
+							"value": null,
+							"type": "String"
+						},
+						"TriggerID": {
+							"value": {
+								"value": "@pipeline().TriggerId",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TriggerTime": {
+							"value": {
+								"value": "@pipeline().TriggerTime",
+								"type": "Expression"
+							},
+							"type": "String"
+						},
+						"TriggerType": {
+							"value": {
+								"value": "@pipeline().TriggerType",
+								"type": "Expression"
+							},
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-05-13T18:14:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

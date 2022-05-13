@@ -1,0 +1,9 @@
+{
+	"name": "datafactory-datadiggers",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "f75f9389-937e-4617-8018-29c367ee0394",
+		"tenantId": "e5727ff0-84f8-42ba-9c30-de24a8e8ceec"
+	}
+}

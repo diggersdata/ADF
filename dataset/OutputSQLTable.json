@@ -1,0 +1,75 @@
+{
+	"name": "OutputSQLTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "StageDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "dunsNum",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "dunsName",
+				"type": "nvarchar"
+			},
+			{
+				"name": "county",
+				"type": "nvarchar"
+			},
+			{
+				"name": "streetAddress",
+				"type": "nvarchar"
+			},
+			{
+				"name": "city",
+				"type": "nvarchar"
+			},
+			{
+				"name": "STATE",
+				"type": "nvarchar"
+			},
+			{
+				"name": "zip",
+				"type": "nvarchar"
+			},
+			{
+				"name": "phone",
+				"type": "nvarchar"
+			},
+			{
+				"name": "executiveContact1",
+				"type": "nvarchar"
+			},
+			{
+				"name": "executiveContact2",
+				"type": "nvarchar"
+			},
+			{
+				"name": "isWomanOwned",
+				"type": "nvarchar"
+			},
+			{
+				"name": "MinorityOwnedDesc",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PrimaryLeadershipGender",
+				"type": "nvarchar"
+			},
+			{
+				"name": "PrimaryLeadershipNationality",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "STG_MOA_DATA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
