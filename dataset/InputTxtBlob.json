@@ -1,0 +1,29 @@
+{
+	"name": "InputTxtBlob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Diversity_Owned_Data.txt",
+				"container": "inputfile"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "dunsNum\tdunsName\tcounty\tstreetAddress\tcity\tSTATE\tzip\tphone\texecutiveContact1\texecutiveContact2\tisWomanOwned\tMinorityOwnedDesc\tPrimaryLeadershipGender\tPrimaryLeadership_Nationality",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
