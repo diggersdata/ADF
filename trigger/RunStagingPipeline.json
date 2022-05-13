@@ -1,7 +1,7 @@
 {
 	"name": "RunStagingPipeline",
 	"properties": {
-		"description": "Reads data from Blob and loads data to staging table (after truncating)",
+		"description": "Reads txt data from Azure Blob and loads data to Azure SQL DB staging table (after truncating)",
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
@@ -16,10 +16,10 @@
 		"typeProperties": {
 			"recurrence": {
 				"frequency": "Day",
-				"interval": 15,
-				"startTime": "2022-05-13T18:24:00Z",
-				"endTime": "2022-05-31T18:24:00Z",
-				"timeZone": "UTC",
+				"interval": 1,
+				"startTime": "2022-05-13T18:24:00",
+				"endTime": "2022-05-31T18:24:00",
+				"timeZone": "India Standard Time",
 				"schedule": {
 					"minutes": [
 						0
