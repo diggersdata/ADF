@@ -68,7 +68,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "STG_MOA_DATA"
+			"table": "STG_DiversityInformation"
 		}
 	},
 	"type": "Microsoft.DataFactory/factories/datasets"
