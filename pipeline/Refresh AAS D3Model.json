@@ -1,0 +1,37 @@
+{
+	"name": "Refresh AAS D3Model",
+	"properties": {
+		"activities": [
+			{
+				"name": "Refresh AAS D3 Model",
+				"description": "Data Digger Diversity Model",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://eastus.asazure.windows.net/servers/anaservdatadiggers/models/DataDiggersDiversityModel/refreshes",
+					"method": "POST",
+					"body": {
+						"Type": "Full",
+						"CommitMode": "transactional",
+						"MaxParallelism": 2,
+						"RetryCount": 2,
+						"Objects": []
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://*.asazure.windows.net"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
