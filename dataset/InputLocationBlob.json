@@ -1,5 +1,5 @@
 {
-	"name": "InputBlobLocation",
+	"name": "InputLocationBlob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobConnection",
