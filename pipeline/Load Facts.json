@@ -1,0 +1,28 @@
+{
+	"name": "Load Facts",
+	"properties": {
+		"activities": [
+			{
+				"name": "Load Fact Table",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[edw].[USP_Load_Facts]"
+				},
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": []
+	}
+}

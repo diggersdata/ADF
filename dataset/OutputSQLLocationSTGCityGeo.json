@@ -1,0 +1,33 @@
+{
+	"name": "OutputSQLLocationSTGCityGeo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "StageDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "City_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Latitude",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			},
+			{
+				"name": "Longitude",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "STG_City_Geography"
+		}
+	}
+}

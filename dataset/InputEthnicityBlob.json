@@ -1,5 +1,5 @@
 {
-	"name": "InputTxtBlob",
+	"name": "InputEthnicityBlob",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "BlobConnection",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Diversity_Owned_Data_delimited.txt",
+				"fileName": "ethnicityData.txt",
 				"container": "inputfile"
 			},
 			"columnDelimiter": "\t",
@@ -20,10 +20,9 @@
 		},
 		"schema": [
 			{
-				"name": "dunsNum\tdunsName\tcounty\tstreetAddress\tcity\tSTATE\tzip\tphone\texecutiveContact1\texecutiveContact2\tisWomanOwned\tMinorityOwnedDesc\tPrimaryLeadershipGender\tPrimaryLeadership_Nationality",
+				"name": "num_code\talpha_2_code\talpha_3_code\ten_short_name\tnationality",
 				"type": "String"
 			}
 		]
-	},
-	"type": "Microsoft.DataFactory/factories/datasets"
+	}
 }

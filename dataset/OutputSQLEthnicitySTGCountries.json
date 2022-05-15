@@ -1,0 +1,29 @@
+{
+	"name": "OutputSQLEthnicitySTGCountries",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "StageDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Country_Code",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Country_Name",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Nationality",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "STG_Countries"
+		}
+	}
+}

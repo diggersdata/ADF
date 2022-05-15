@@ -28,7 +28,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE [dbo].[STG_MOA_DATA]",
+						"preCopyScript": "TRUNCATE TABLE [dbo].[STG_DiversityInformation]",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
@@ -39,14 +39,14 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "dunsNum",
+									"name": "# dunsNum",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "dunsNum",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"name": "DUNS_Number",
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -56,7 +56,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "dunsName",
+									"name": "DUNS_Name",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -68,7 +68,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "county",
+									"name": "County",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -80,7 +80,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "streetAddress",
+									"name": "Street_Address",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -92,7 +92,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "city",
+									"name": "City",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -104,7 +104,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "STATE",
+									"name": "State",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -116,7 +116,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "zip",
+									"name": "Zip_Code",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -128,7 +128,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "phone",
+									"name": "Phone_Number",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -140,7 +140,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "executiveContact1",
+									"name": "Primary_executive_Contact",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -152,7 +152,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "executiveContact2",
+									"name": "Secondary_executive_Contact",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -164,7 +164,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "isWomanOwned",
+									"name": "Is_Woman_Owned",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
@@ -176,31 +176,31 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MinorityOwnedDesc",
+									"name": "Minority_Owned_Description",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}
 							},
 							{
 								"source": {
-									"name": "PrimaryLeadershipGender",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PrimaryLeadershipGender",
-									"type": "String",
-									"physicalType": "nvarchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PrimaryLeadership_Nationality",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
 									"name": "PrimaryLeadershipNationality",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Primary_Leadership_Country",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryLeadershipGender",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Primary_Leadership_Gender",
 									"type": "String",
 									"physicalType": "nvarchar"
 								}

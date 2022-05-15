@@ -1,0 +1,34 @@
+{
+	"name": "RunStagingPipeline",
+	"properties": {
+		"description": "Reads txt data from Azure Blob and loads data to Azure SQL DB staging table (after truncating)",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Copy From Blob To SQL DB",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-05-13T18:24:00",
+				"endTime": "2022-05-31T18:24:00",
+				"timeZone": "India Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						5
+					]
+				}
+			}
+		}
+	}
+}
