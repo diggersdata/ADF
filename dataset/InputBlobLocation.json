@@ -1,0 +1,28 @@
+{
+	"name": "InputBlobLocation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "locationDF2.txt",
+				"container": "inputfile"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "City\tlatitude\tlongitude",
+				"type": "String"
+			}
+		]
+	}
+}
