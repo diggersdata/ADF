@@ -38,6 +38,11 @@
 						"type": "TabularTranslator",
 						"mappings": [
 							{
+								"source": {
+									"name": "dunsNum",
+									"type": "String",
+									"physicalType": "String"
+								},
 								"sink": {
 									"name": "DUNS_Number",
 									"type": "Int32",
