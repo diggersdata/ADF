@@ -28,7 +28,7 @@
 					},
 					"sink": {
 						"type": "AzureSqlSink",
-						"preCopyScript": "TRUNCATE TABLE [dbo].[STG_MOA_DATA]",
+						"preCopyScript": "TRUNCATE TABLE [dbo].[STG_DiversityInformation]",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false,
 						"disableMetricsCollection": false
