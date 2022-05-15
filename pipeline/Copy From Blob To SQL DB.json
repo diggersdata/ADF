@@ -39,14 +39,14 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "dunsNum",
+									"name": "# dunsNum",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "DUNS_Number",
-									"type": "Int32",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -117,8 +117,8 @@
 								},
 								"sink": {
 									"name": "Zip_Code",
-									"type": "Int32",
-									"physicalType": "int"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
@@ -165,8 +165,8 @@
 								},
 								"sink": {
 									"name": "Is_Woman_Owned",
-									"type": "Boolean",
-									"physicalType": "bit"
+									"type": "String",
+									"physicalType": "nvarchar"
 								}
 							},
 							{
