@@ -1,9 +1,9 @@
 {
-	"name": "pipeline1",
+	"name": "Load Dimensions",
 	"properties": {
 		"activities": [
 			{
-				"name": "Stored procedure1",
+				"name": "Load Dim Tables",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -13,7 +13,14 @@
 					"secureOutput": false,
 					"secureInput": false
 				},
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[edw].[USP_Load_Dimensions]"
+				},
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"annotations": []
