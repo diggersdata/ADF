@@ -1,0 +1,28 @@
+{
+	"name": "InputEthnicityBlob",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "BlobConnection",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "ethnicityData.txt",
+				"container": "inputfile"
+			},
+			"columnDelimiter": "\t",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "num_code\talpha_2_code\talpha_3_code\ten_short_name\tnationality",
+				"type": "String"
+			}
+		]
+	}
+}
