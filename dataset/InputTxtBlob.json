@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Diversity_Owned_Data.txt",
+				"fileName": "Diversity_Owned_Data_delimited.csv",
 				"container": "inputfile"
 			},
 			"columnDelimiter": "\t",
