@@ -60,7 +60,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Diversity_Owned_Data.txt",
+						"fileName": "Diversity_Owned_Data_delimited.txt",
 						"container": "inputfile"
 					},
 					"columnDelimiter": "\t",
@@ -151,7 +151,219 @@
 				],
 				"typeProperties": {
 					"schema": "dbo",
-					"table": "STG_MOA_DATA"
+					"table": "STG_DiversityInformation"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Dimensions')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load Dim Tables",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[edw].[USP_Load_Dimensions]"
+						},
+						"linkedServiceName": {
+							"referenceName": "StageDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Facts')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Load Fact Table",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[edw].[USP_Load_Facts]"
+						},
+						"linkedServiceName": {
+							"referenceName": "StageDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputEthnicityBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "ethnicityData.txt",
+						"container": "inputfile"
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "num_code\talpha_2_code\talpha_3_code\ten_short_name\tnationality",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputSQLEthnicitySTGCountries')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "Country_Code",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Country_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Nationality",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "STG_Countries"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputLocationBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "locationDF2.txt",
+						"container": "inputfile"
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "City\tlatitude\tlongitude",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputSQLLocationSTGCityGeo')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "City_Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Latitude",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					},
+					{
+						"name": "Longitude",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 4
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "STG_City_Geography"
 				}
 			},
 			"dependsOn": [
@@ -190,7 +402,7 @@
 							},
 							"sink": {
 								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE [dbo].[STG_MOA_DATA]",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[STG_DiversityInformation]",
 								"writeBehavior": "insert",
 								"sqlWriterUseTableLock": false,
 								"disableMetricsCollection": false
@@ -201,14 +413,14 @@
 								"mappings": [
 									{
 										"source": {
-											"name": "dunsNum",
+											"name": "# dunsNum",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "dunsNum",
-											"type": "Int64",
-											"physicalType": "bigint"
+											"name": "DUNS_Number",
+											"type": "String",
+											"physicalType": "nvarchar"
 										}
 									},
 									{
@@ -218,7 +430,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "dunsName",
+											"name": "DUNS_Name",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -230,7 +442,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "county",
+											"name": "County",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -242,7 +454,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "streetAddress",
+											"name": "Street_Address",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -254,7 +466,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "city",
+											"name": "City",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -266,7 +478,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "STATE",
+											"name": "State",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -278,7 +490,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "zip",
+											"name": "Zip_Code",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -290,7 +502,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "phone",
+											"name": "Phone_Number",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -302,7 +514,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "executiveContact1",
+											"name": "Primary_executive_Contact",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -314,7 +526,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "executiveContact2",
+											"name": "Secondary_executive_Contact",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -326,7 +538,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "isWomanOwned",
+											"name": "Is_Woman_Owned",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -338,31 +550,31 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "MinorityOwnedDesc",
+											"name": "Minority_Owned_Description",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
 									},
 									{
 										"source": {
-											"name": "PrimaryLeadershipGender",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "PrimaryLeadershipGender",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "PrimaryLeadership_Nationality",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
 											"name": "PrimaryLeadershipNationality",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Primary_Leadership_Country",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "PrimaryLeadershipGender",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Primary_Leadership_Gender",
 											"type": "String",
 											"physicalType": "nvarchar"
 										}
@@ -530,6 +742,230 @@
 				"[concat(variables('factoryId'), '/datasets/InputTxtBlob')]",
 				"[concat(variables('factoryId'), '/datasets/OutputSQLTable')]",
 				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Stg Countries')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "EthnicityData To STG_Countries",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [edw].[Dim_Ethnicity]",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "alpha_3_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country_Code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "en_short_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country_Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "nationality",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Nationality",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputEthnicityBlob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputSQLEthnicitySTGCountries",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputEthnicityBlob')]",
+				"[concat(variables('factoryId'), '/datasets/OutputSQLEthnicitySTGCountries')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Load Stg CityGeo')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "LocationData To STG_CityGeo",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [dbo].[STG_City_Geography]",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "City",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "City_Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "latitude",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Latitude",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "longitude",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Longitude",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputLocationBlob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputSQLLocationSTGCityGeo",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputLocationBlob')]",
+				"[concat(variables('factoryId'), '/datasets/OutputSQLLocationSTGCityGeo')]"
 			]
 		},
 		{
