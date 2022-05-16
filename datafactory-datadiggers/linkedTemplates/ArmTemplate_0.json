@@ -21,32 +21,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/BlobConnection')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('BlobConnection_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/StageDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"connectionString": "[parameters('StageDB_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Refresh AAS D3Model')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -92,116 +66,30 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/InputTxtBlob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/BlobConnection')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobConnection",
-					"type": "LinkedServiceReference"
-				},
 				"annotations": [],
-				"type": "DelimitedText",
+				"type": "AzureBlobStorage",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Diversity_Owned_Data_delimited.txt",
-						"container": "inputfile"
-					},
-					"columnDelimiter": "\t",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "dunsNum\tdunsName\tcounty\tstreetAddress\tcity\tSTATE\tzip\tphone\texecutiveContact1\texecutiveContact2\tisWomanOwned\tMinorityOwnedDesc\tPrimaryLeadershipGender\tPrimaryLeadership_Nationality",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/OutputSQLTable')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "StageDB",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "dunsNum",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "dunsName",
-						"type": "nvarchar"
-					},
-					{
-						"name": "county",
-						"type": "nvarchar"
-					},
-					{
-						"name": "streetAddress",
-						"type": "nvarchar"
-					},
-					{
-						"name": "city",
-						"type": "nvarchar"
-					},
-					{
-						"name": "STATE",
-						"type": "nvarchar"
-					},
-					{
-						"name": "zip",
-						"type": "nvarchar"
-					},
-					{
-						"name": "phone",
-						"type": "nvarchar"
-					},
-					{
-						"name": "executiveContact1",
-						"type": "nvarchar"
-					},
-					{
-						"name": "executiveContact2",
-						"type": "nvarchar"
-					},
-					{
-						"name": "isWomanOwned",
-						"type": "nvarchar"
-					},
-					{
-						"name": "MinorityOwnedDesc",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PrimaryLeadershipGender",
-						"type": "nvarchar"
-					},
-					{
-						"name": "PrimaryLeadershipNationality",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "STG_DiversityInformation"
+					"connectionString": "[parameters('BlobConnection_connectionString')]"
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
-			]
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/StageDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('StageDB_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Load Dimensions')]",
@@ -311,6 +199,72 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/InputLocationBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "locationDF2.txt",
+						"container": "inputfile"
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "City\tlatitude\tlongitude",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/InputTxtBlob')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "BlobConnection",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Diversity_Owned_Data_delimited.txt",
+						"container": "inputfile"
+					},
+					"columnDelimiter": "\t",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "dunsNum\tdunsName\tcounty\tstreetAddress\tcity\tSTATE\tzip\tphone\texecutiveContact1\texecutiveContact2\tisWomanOwned\tMinorityOwnedDesc\tPrimaryLeadershipGender\tPrimaryLeadership_Nationality",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/OutputSQLEthnicitySTGCountries')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -345,39 +299,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/InputLocationBlob')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "BlobConnection",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "locationDF2.txt",
-						"container": "inputfile"
-					},
-					"columnDelimiter": "\t",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "City\tlatitude\tlongitude",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/BlobConnection')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/OutputSQLLocationSTGCityGeo')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -409,6 +330,85 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "STG_City_Geography"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/StageDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/OutputSQLTable')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "StageDB",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "dunsNum",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "dunsName",
+						"type": "nvarchar"
+					},
+					{
+						"name": "county",
+						"type": "nvarchar"
+					},
+					{
+						"name": "streetAddress",
+						"type": "nvarchar"
+					},
+					{
+						"name": "city",
+						"type": "nvarchar"
+					},
+					{
+						"name": "STATE",
+						"type": "nvarchar"
+					},
+					{
+						"name": "zip",
+						"type": "nvarchar"
+					},
+					{
+						"name": "phone",
+						"type": "nvarchar"
+					},
+					{
+						"name": "executiveContact1",
+						"type": "nvarchar"
+					},
+					{
+						"name": "executiveContact2",
+						"type": "nvarchar"
+					},
+					{
+						"name": "isWomanOwned",
+						"type": "nvarchar"
+					},
+					{
+						"name": "MinorityOwnedDesc",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PrimaryLeadershipGender",
+						"type": "nvarchar"
+					},
+					{
+						"name": "PrimaryLeadershipNationality",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "STG_DiversityInformation"
 				}
 			},
 			"dependsOn": [
@@ -790,118 +790,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Load Stg Countries')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "EthnicityData To STG_Countries",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"preCopyScript": "TRUNCATE TABLE [edw].[Dim_Ethnicity]",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false,
-								"disableMetricsCollection": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "alpha_3_code",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Country_Code",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "en_short_name",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Country_Name",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									},
-									{
-										"source": {
-											"name": "nationality",
-											"type": "String",
-											"physicalType": "String"
-										},
-										"sink": {
-											"name": "Nationality",
-											"type": "String",
-											"physicalType": "nvarchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "InputEthnicityBlob",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "OutputSQLEthnicitySTGCountries",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/InputEthnicityBlob')]",
-				"[concat(variables('factoryId'), '/datasets/OutputSQLEthnicitySTGCountries')]"
-			]
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Load Stg CityGeo')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1014,6 +902,118 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Load Stg Countries')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "EthnicityData To STG_Countries",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"preCopyScript": "TRUNCATE TABLE [edw].[Dim_Ethnicity]",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false,
+								"disableMetricsCollection": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "alpha_3_code",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country_Code",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "en_short_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Country_Name",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									},
+									{
+										"source": {
+											"name": "nationality",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Nationality",
+											"type": "String",
+											"physicalType": "nvarchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "InputEthnicityBlob",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "OutputSQLEthnicitySTGCountries",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/InputEthnicityBlob')]",
+				"[concat(variables('factoryId'), '/datasets/OutputSQLEthnicitySTGCountries')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RunStagingPipeline')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -1051,6 +1051,177 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Copy From Blob To SQL DB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DataDigger - Azure Dataflow')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Master pipeline to move the data from within Azure services",
+				"activities": [
+					{
+						"name": "Azure Blob to Stage - Main File",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Copy From Blob To SQL DB",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Azure Blob to Stage - Lookup File CityGeo",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Load Stg CityGeo",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Azure Blob to Stage - Lookup File Countries",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Load Stg Countries",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Load EDW Dimensions",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Azure Blob to Stage - Main File",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Azure Blob to Stage - Lookup File CityGeo",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Azure Blob to Stage - Lookup File Countries",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Load Dimensions",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Load EDW Facts",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Load EDW Dimensions",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Load Facts",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Refresh AAS Tabular Model",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Load EDW Facts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Refresh AAS D3Model",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Send Email To Data Digger Account",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Refresh AAS Tabular Model",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-88.eastus.logic.azure.com:443/workflows/8bcf4672e3ce4160a75a28bdee9cd4d9/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nzGqGV6m2vZbSx35uI-dqyhInfqyz733ZMEYzfZJ7HY",
+							"method": "POST",
+							"headers": {
+								"Content.Type": "application/json"
+							},
+							"body": {
+								"value": "{\n    \"Pipeline\":\"@{pipeline().Pipeline}\",\n    \"ErrorMessage\": \"@{activity('Refresh AAS Tabular Model').Error.Message}\",\n    \"DataFactoryName\": \"@{pipeline().DataFactory},\n    \"RunID\": \"@{pipeline().RunId}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Copy From Blob To SQL DB')]",
+				"[concat(variables('factoryId'), '/pipelines/Load Stg CityGeo')]",
+				"[concat(variables('factoryId'), '/pipelines/Load Stg Countries')]",
+				"[concat(variables('factoryId'), '/pipelines/Load Dimensions')]",
+				"[concat(variables('factoryId'), '/pipelines/Load Facts')]",
+				"[concat(variables('factoryId'), '/pipelines/Refresh AAS D3Model')]"
 			]
 		}
 	]
