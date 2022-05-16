@@ -113,6 +113,37 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Refresh AAS Tabular Model",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-88.eastus.logic.azure.com:443/workflows/8bcf4672e3ce4160a75a28bdee9cd4d9/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=nzGqGV6m2vZbSx35uI-dqyhInfqyz733ZMEYzfZJ7HY",
+					"method": "POST",
+					"headers": {
+						"Content.Type": "application/json"
+					},
+					"body": {
+						"value": "{\n    \"Pipeline\":\"@{pipeline().Pipeline}\",\n    \"ErrorMessage\": \"@{activity('Refresh AAS Tabular Model').Error.Message}\",\n    \"DataFactoryName\": \"@{pipeline().DataFactory},\n    \"RunID\": \"@{pipeline().RunId}\"\n}",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"annotations": []
