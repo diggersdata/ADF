@@ -1,5 +1,5 @@
 {
-	"name": "Azure Dataflow",
+	"name": "DataDigger - Azure Dataflow",
 	"properties": {
 		"description": "Master pipeline to move the data from within Azure services",
 		"annotations": []
