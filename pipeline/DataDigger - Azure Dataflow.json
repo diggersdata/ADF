@@ -115,7 +115,7 @@
 				}
 			},
 			{
-				"name": "Web1",
+				"name": "Send Email To Data Digger Account",
 				"type": "WebActivity",
 				"dependsOn": [
 					{
